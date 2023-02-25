@@ -19,6 +19,7 @@ public class SimpleFragment extends Fragment {
     public SimpleFragment() {
         // Required empty public constructor
     }
+    public static SimpleFragment newInstance(){return new SimpleFragment();}
 
 
 
@@ -26,6 +27,8 @@ public class SimpleFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
+// static menggunakan fragment di xml, dynamic menggunakan FrameLayout, Dynamic menggunakan wadah kemudian akan diisi.
+// Kalau makai fragmen dinamis itu kalau hilang artinya benar benar hilang. Kalau static di hide itu artinya hanya hilang tampilan tapi tetap masih memakan memori.
 
         }
     }
@@ -34,17 +37,20 @@ public class SimpleFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         final RadioGroup radioGroup =  view.findViewById(R.id.radio_group);
-        radioGroup.setOnCheckedChangeListener((radioGroup1, i) -> {
-            View radioButton = radioGroup1.findViewById(i);
-            int index = radioGroup1.indexOfChild(radioButton);
-            TextView textView = view.findViewById(R.id.fragment_header);
-            switch (index){
-                case YES :
-                    textView.setText(R.string.yes_message);break;
-                case NO :
-                    textView.setText(R.string.no_message);break;
-                default:
-                    break;
+        radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup radioGroup, int i) {
+                View radioButton = radioGroup.findViewById(i);
+                int index = radioGroup.indexOfChild(radioButton);
+                TextView textView = view.findViewById(R.id.fragment_header);
+                switch (index){
+                    case YES :
+                        textView.setText(R.string.yes_message);break;
+                    case NO :
+                        textView.setText(R.string.no_message);break;
+                    default:
+                        break;
+                }
             }
         });
     }
